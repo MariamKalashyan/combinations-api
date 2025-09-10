@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: combos-mysql
+    # On M1/M2 this usually works without platform. If you get an arch error, uncomment next line:
+    # platform: linux/arm64/v8
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: combos
+      MYSQL_USER: combos
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - combos-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-psecret"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+volumes:
+  combos-mysql-data:
